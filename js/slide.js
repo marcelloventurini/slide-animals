@@ -1,3 +1,5 @@
+import debounce from './debounce.js'
+
 export default class Slide {
   constructor(slide, container) {
     this.slide = document.querySelector(slide)
@@ -7,6 +9,7 @@ export default class Slide {
       startX: 0,
       movement: 0,
     }
+    this.activeClass = 'active'
   }
 
   transition(active) {
@@ -74,12 +77,6 @@ export default class Slide {
     this.container.addEventListener('touchend', this.onEnd)
   }
 
-  bindEvents() {
-    this.onStart = this.onStart.bind(this)
-    this.onMove = this.onMove.bind(this)
-    this.onEnd = this.onEnd.bind(this)
-  }
-
   // slides settings
   slidePosition(slide) {
     const margin = (this.container.offsetWidth - slide.offsetWidth) / 2
@@ -111,6 +108,14 @@ export default class Slide {
     this.moveSlide(activeSlide.position)
     this.slideIndexNav(index)
     this.distance.finalPosition = activeSlide.position
+    this.changeActiveClass()
+  }
+
+  changeActiveClass() {
+    this.slideArray.forEach((item) => {
+      item.element.classList.remove(this.activeClass)
+    })
+    this.slideArray[this.index.active].element.classList.add(this.activeClass)
   }
 
   activatePrevSlide() {
@@ -125,11 +130,30 @@ export default class Slide {
     }
   }
 
+  onResize() {
+    setTimeout(() => {
+      this.slidesSettings()
+      this.changeSlide(this.index.active)
+    }, 800)
+  }
+
+  addResizeEvent() {
+    addEventListener('resize', this.onResize)
+  }
+
+  bindEvents() {
+    this.onStart = this.onStart.bind(this)
+    this.onMove = this.onMove.bind(this)
+    this.onEnd = this.onEnd.bind(this)
+    this.onResize = debounce(this.onResize.bind(this), 200)
+  }
+
   init() {
     this.transition(true)
     this.bindEvents()
     this.addSlideEvents()
     this.slidesSettings()
+    this.addResizeEvent()
     return this
   }
 }
