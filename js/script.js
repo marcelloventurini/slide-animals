@@ -4,3 +4,5 @@ const slide = new Slide('.slide', '.container')
 slide.init()
 
 console.log(slide)
+
+slide.changeSlide(3)
