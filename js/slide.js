@@ -145,6 +145,10 @@ export default class Slide {
     this.onStart = this.onStart.bind(this)
     this.onMove = this.onMove.bind(this)
     this.onEnd = this.onEnd.bind(this)
+
+    this.activatePrevSlide = this.activatePrevSlide.bind(this)
+    this.activateNextSlide = this.activateNextSlide.bind(this)
+
     this.onResize = debounce(this.onResize.bind(this), 200)
   }
 
@@ -154,6 +158,20 @@ export default class Slide {
     this.addSlideEvents()
     this.slidesSettings()
     this.addResizeEvent()
+    this.changeSlide(2)
     return this
+  }
+}
+
+export class SlideNav extends Slide {
+  addArrowNav(prev, next) {
+    this.prevElement = document.querySelector(prev)
+    this.nextElement = document.querySelector(next)
+    this.addArrowNavEvent()
+  }
+
+  addArrowNavEvent() {
+    this.prevElement.addEventListener('click', this.activatePrevSlide)
+    this.nextElement.addEventListener('click', this.activateNextSlide)
   }
 }

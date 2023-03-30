@@ -1,9 +1,7 @@
-import Slide from "./slide.js";
+import { SlideNav } from "./slide.js"
 
-const slide = new Slide('.slide', '.container')
+const slide = new SlideNav('.slide', '.container')
 slide.init()
+slide.addArrowNav('.prev', '.next')
 
 console.log(slide)
-
-slide.changeSlide(3)
-slide.activateNextSlide()
