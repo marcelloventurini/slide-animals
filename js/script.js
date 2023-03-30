@@ -3,5 +3,4 @@ import { SlideNav } from "./slide.js"
 const slide = new SlideNav('.slide', '.container')
 slide.init()
 slide.addArrowNav('.prev', '.next')
-
-console.log(slide)
+slide.addControl()
